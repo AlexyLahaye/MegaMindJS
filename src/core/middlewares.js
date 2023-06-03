@@ -3,7 +3,10 @@ const cors = require('cors');
 const { DateTime } = require('luxon');
 const { expressjwt: jwt } = require('express-jwt');
 
-const initJsonHandlerMiddlware = (app) => app.use(express.json());
+const initJsonHandlerMiddlware = (app) => {
+    app.use(express.json());
+    app.use(express.urlencoded({extended: false}))
+}
 
 const initCorsMiddlware = (app) => app.use(cors());
 

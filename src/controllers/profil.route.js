@@ -1,18 +1,18 @@
 const express = require('express');
 const router = express.Router();
 const { body } = require('express-validator');
-const {createProfil, getAllProfilsFromIdUser, getProfilByPseudo, deleteProfil} = require("../models/profil-reprository");
+const {createProfil, getAllProfilsFromIdUser, getProfilByPseudo, deleteProfil, getMostFollowedProfils, getProfilByIdProfil} = require("../models/profil-reprository");
 
 
-router.post('/',body('label_user').notEmpty(), body('pseudo_profil').notEmpty(), body('isadmin_profil').notEmpty() , async (req, res) => {
+router.post('/', body('pseudo_profil').notEmpty(), async (req, res) => {
     const profil = await getProfilByPseudo(req.body.pseudo_profil);
-
+    console.log(profil)
     if (!profil){
         await createProfil(req.body)
-        res.status(200).send();
+        res.status(200).json({message : "Le profil a bien ete créé"});
     }
     else {
-        res.status(412).send("Echec création profil")
+        res.status(401).send("Echec création profil")
     }
 });
 
@@ -23,6 +23,39 @@ router.get('/:id_user', async (req , res) => {
     }
     catch (e){
         res.status(412).send(e.message);
+    }
+});
+
+//ON RECUPERE UN PROFIL VIA SON PSEUDO
+router.get('/pseudoProfil/:pseudo_profil', async (req , res) => {
+    try{
+        const profil = await getProfilByPseudo(req.params.pseudo_profil);
+        res.status(200).send([profil]);
+    }
+    catch (e){
+        res.status(409).send(e.message);
+    }
+});
+
+//ON RECUPERE UN PROFIL VIA SON ID
+router.get('/idprofil/:id_profil', async (req , res) => {
+    try{
+        const ProfilFromID = await getProfilByIdProfil(req.params.id_profil);
+        res.status(200).send([ProfilFromID]);
+    }
+    catch (e){
+        res.status(409).send(e.message);
+    }
+});
+
+// ON RECUPERE LES TROIS PROFILS LES PLUS SUIVIS
+router.get('/', async (req , res) => {
+    try{
+        const threeBestProfil = await getMostFollowedProfils();
+        res.status(200).send([threeBestProfil]);
+    }
+    catch (e){
+        res.status(413).send(e.message);
     }
 });
 
