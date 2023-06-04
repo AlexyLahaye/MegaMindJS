@@ -2,7 +2,7 @@ const Post = require("./post.model");
 const {getProfilByPseudo} = require("../models/profil-reprository");
 const {getAllfollowFromIdProfil} = require("../models/follow-repository");
 const uuid = require("uuid");
-const {countLikeForIdProfil, countLikeFromContenu} = require("./like-repository");
+const {countLikeForIdProfil, countLikeFromContenu, getIsLikedByUser} = require("./like-repository");
 const {countComForIdProfil} = require("./commentaire-repository");
 const {getProfilByIdProfil} = require("./profil-reprository");
 
@@ -24,19 +24,21 @@ exports.getAllPostOfFollowedProfils = async (id_profil) => {
         }
 
     if (listPostByUser.length > 0) {
-        listPostByUser = listPostByUser.sort((a, b) => {
+        listPostByUser = listPostByUser.sort((b, a) => {
             return a.createdAt - b.createdAt;
         })
         for (const unPost of listPostByUser){
-            console.log(unPost)
             leProfil = await getProfilByIdProfil(unPost.id_profil)
             nbLike =  await countLikeFromContenu(unPost.id_post, 2)
+            isLiked = await getIsLikedByUser(unPost.id_post,2,id_profil)
             const pseudo_profil = leProfil.pseudo_profil
-            unPost.pseudo_profil = pseudo_profil
-            unPost.nbLike = nbLike
+            unPost.dataValues.pseudo_profil = pseudo_profil
+            unPost.dataValues.nbLike = nbLike
+            unPost.dataValues.isLiked = isLiked
         }
     }
-        return listPostByUser;
+
+    return listPostByUser;
 }
 
 exports.getAllPostFromPseudoProfil = async (pseudo_profil) => {

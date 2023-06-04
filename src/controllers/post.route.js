@@ -9,6 +9,7 @@ const {createPost, deletePost, getAllPostFromPseudoProfil, getPostById, getAllPo
 
 router.post('/', body('contenu_post').notEmpty(), body('sensibilite_post').notEmpty(), async (req, res) => {
     try{
+        console.log(req.body)
         await createPost(req.body)
         res.status(200).json({message : "Le post a bien ete créé"});
     }
@@ -22,7 +23,6 @@ router.get('/:id_profil', async (req,res) =>{
     console.log(req.params.id_profil)
     const foundAllPost = await getAllPostOfFollowedProfils(req.params.id_profil);
 
-
     if (foundAllPost){
         res.status(200).send([foundAllPost]);
         return;
@@ -35,17 +35,6 @@ router.get('/:id_profil', async (req,res) =>{
     res.send(foundAllPost)
 
 });
-
-//GET TOUT LES POSTS DES PROFILS SUIVIS ET SES PROFILS D'UN UTILISATEUR. (SPECIFIQUE ANDROID STUDIO)
-router.get('/displayPost/:id_profil',async (req,res) =>{
-    const foundAllPost = await getAllPostOfFollowedProfils(req.params.id_profil);
-    const listPostGen = [];
-    if (foundAllPost.length !== 0){
-        for(unFoundedPost in foundAllPost){
-
-        }
-    }
-})
 
 //GET LES POSTS DUN PROFIL
 router.get('/own/:id_profil', async (req,res) =>{

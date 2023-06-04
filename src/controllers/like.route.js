@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const { body } = require('express-validator');
-const {createLike, getAllLikeFromIdContenu, getIsLikedByUser, countLikeFromContenu} = require("../models/like-repository");
+const {createLike, getAllLikeFromIdContenu, getIsLikedByUser, countLikeFromContenu, deleteLike} = require("../models/like-repository");
 
 
 router.post('/', body('id_like').notEmpty(), body('id_contenu_like').notEmpty(), async (req, res) => {
@@ -54,8 +54,8 @@ router.get('/:id_contenu_like/:id_etat_like/:id_profil_like', async (req,res)=> 
 })
 
 router.delete('/:id_contenu_like/id_etat_like', async (req, res) => {
+    console.log("AZZZZZZZZZZZZZZZZZZZDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDSSSSSSSSSSSSSSSSSSSSSSSSQQQQQQQQQQQQQQQQQQQQQQQ")
     await deleteLike(req.params.id_contenu_like, req.params.id_etat_like);
-    res.status(204).end();
 });
 
 exports.initializeRoutes = () => router;
