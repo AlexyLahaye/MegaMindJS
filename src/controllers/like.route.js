@@ -35,15 +35,12 @@ router.get('/:id_contenu_like/:id_etat_like', async (req , res) => {
 // Verifie pour un contenu si l'utilisateur a deja like celui ci
 router.get('/:id_contenu_like/:id_etat_like/:id_profil_like', async (req,res)=> {
     try {
-        console.log("BLALBLALBLABLLABLLBABA")
         const like = await getIsLikedByUser(req.params.id_contenu_like, req.params.id_etat_like, req.params.id_profil_like);
         console.log(like)
         if (like === null){
-            console.log("ICIIIIIIIIII")
             res.status(200).send({isLiked :false});
         }
         else {
-            console.log("LAAAAAAAAAAAAAAA")
             res.status(200).send({isLiked :true});
         }
     }
@@ -53,9 +50,9 @@ router.get('/:id_contenu_like/:id_etat_like/:id_profil_like', async (req,res)=> 
     }
 })
 
-router.delete('/:id_contenu_like/id_etat_like', async (req, res) => {
-    console.log("AZZZZZZZZZZZZZZZZZZZDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDDSSSSSSSSSSSSSSSSSSSSSSSSQQQQQQQQQQQQQQQQQQQQQQQ")
-    await deleteLike(req.params.id_contenu_like, req.params.id_etat_like);
+router.delete('/:id_contenu_like/:id_profil_like/:id_etat_like', async (req, res) => {
+    res.status(200).send({deleted : "ok"})
+    await deleteLike(req.params.id_contenu_like,req.params.id_profil_like, req.params.id_etat_like);
 });
 
 exports.initializeRoutes = () => router;

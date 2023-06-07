@@ -1,6 +1,3 @@
 const Sequelize = require('sequelize');
 
-exports.sequelize = new Sequelize('MegaMind', 'postgres', '5sb3j4gA', {
-    host: 'localhost',
-    dialect: 'postgres',
-})
+exports.sequelize = new Sequelize('postgres://postgres:Test123@localhost:5432/MegaMind')

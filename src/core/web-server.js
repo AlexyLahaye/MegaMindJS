@@ -7,18 +7,20 @@ const comRoutes = require('../controllers/commentaire.route');
 const postRoutes = require('../controllers/post.route');
 const followRoutes = require('../controllers/follow.route');
 const likeRoutes = require('../controllers/like.route');
+const sensibiliteRoutes = require('../controllers/sensibilite.route');
 const messagerieRoutes = require('../controllers/messagerie.route')
 const notificationRoutes = require('../controllers/notification.route')
 const {sequelize} = require("../models/db");
 const User = require("../models/user.model");
 const Profil = require("../models/profil.model");
 const Post = require("../models/post.model")
+const Sensibilite = require("../models/sensibilite.model")
 
 
 
 class WebServer {
     app = undefined;
-    port = 3000;
+    port = process.env.PORT;
     server = undefined;
 
     constructor() {
@@ -27,7 +29,7 @@ class WebServer {
         Profil.belongsTo(User, { foreignKey: 'id_user'});
         Profil.hasMany(Post, {foreignKey: "id_profil"})
         Post.belongsTo(Profil, {foreignKey: "id_profil"});
-        sequelize.sync();
+        sequelize.sync()
         initializeConfigMiddlewares(this.app);
         this._initializeRoutes();
         initializeErrorMiddlwares(this.app);
@@ -51,6 +53,7 @@ class WebServer {
         this.app.use('/commentaire', comRoutes.initializeRoutes());
         this.app.use('/follow', followRoutes.initializeRoutes());
         this.app.use('/like', likeRoutes.initializeRoutes());
+        this.app.use('/sensibilite', sensibiliteRoutes.initializeRoutes());
         this.app.use('/messagerie', messagerieRoutes.initializeRoutes());
         this.app.use('/notification', notificationRoutes.initializeRoutes());
     }
