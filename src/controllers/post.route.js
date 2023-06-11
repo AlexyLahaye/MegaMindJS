@@ -53,8 +53,8 @@ router.get('/own/:id_profil', async (req,res) =>{
 });
 
 //GET LES TROIS POSTS LES PLUS LIKE
-router.get('/most/like', async (req,res) =>{
-    const foundPost = await getMostLikedPosts();
+router.get('/most/like/:id_profil', async (req,res) =>{
+    const foundPost = await getMostLikedPosts(req.params.id_profil);
 
     if (foundPost) {
         res.status(200).send([foundPost]);
@@ -69,8 +69,8 @@ router.get('/most/like', async (req,res) =>{
 });
 
 //GET LES TROIS POST LES PLUS COM
-router.get('/most/com', async (req,res) =>{
-    const foundPost = await getMostComPosts();
+router.get('/most/com/:id_profil', async (req,res) =>{
+    const foundPost = await getMostComPosts(req.params.id_profil);
 
     if (foundPost) {
         res.status(200).send([foundPost]);

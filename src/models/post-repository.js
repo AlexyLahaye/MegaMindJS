@@ -8,7 +8,16 @@ const {getProfilByIdProfil} = require("./profil-reprository");
 
 
 exports.getAllPostFromIdProfil = async (id_profil) => {
-    return await Post.findAll({where : {id_profil}});
+    let listPost =  await Post.findAll({where : {id_profil}});
+    listPost = listPost.sort((b, a) => {return a.createdAt - b.createdAt;})
+    for (unPost of listPost){
+        leProfil = await getProfilByIdProfil(unPost.id_profil)
+        nbLike =  await countLikeFromContenu(unPost.id_post, 2)
+        isLiked = await getIsLikedByUser(unPost.id_post,2,id_profil)
+        unPost.dataValues.nbLike = nbLike
+        unPost.dataValues.isLiked = isLiked
+    }
+    return listPost;
 }
 
 
@@ -45,16 +54,32 @@ exports.getAllPostFromPseudoProfil = async (pseudo_profil) => {
     const profil = await getProfilByPseudo(pseudo_profil)
     if (profil !== null){
         const id_profil = profil.id_profil
-        return await Post.findAll({where : {id_profil}});
+        let listPost =  await Post.findAll({where : {id_profil}});
+        for (unPost of listPost){
+            leProfil = await getProfilByIdProfil(unPost.id_profil)
+            nbLike =  await countLikeFromContenu(unPost.id_post, 2)
+            isLiked = await getIsLikedByUser(unPost.id_post,2,id_profil)
+            unPost.dataValues.pseudo_profil = pseudo_profil
+            unPost.dataValues.nbLike = nbLike
+            unPost.dataValues.isLiked = isLiked
+        }
     }
+    return listPost;
 }
 
-exports.getMostLikedPosts = async () => {
+exports.getMostLikedPosts = async (id_profil) => {
     const posts = await Post.findAll();
     const result = [];
 
     for (let i = 0; i < posts.length; i++) {
+        leProfil = await getProfilByIdProfil(posts[i].id_profil)
+        nbLike =  await countLikeFromContenu(posts[i].id_post, 2)
+        isLiked = await getIsLikedByUser(posts[i].id_post,2,id_profil)
+        const pseudo_profil = leProfil.pseudo_profil
         const count = await countLikeForIdProfil(posts[i].id_profil);
+        posts[i].dataValues.pseudo_profil = pseudo_profil
+        posts[i].dataValues.nbLike = nbLike
+        posts[i].dataValues.isLiked = isLiked
         result.push({ post: posts[i], count: count });
     }
 
@@ -62,12 +87,19 @@ exports.getMostLikedPosts = async () => {
     return result.slice(0, 3).map((item) => item.post);
 };
 
-exports.getMostComPosts = async () => {
+exports.getMostComPosts = async (id_profil) => {
     const posts = await Post.findAll();
     const result = [];
 
     for (let i = 0; i < posts.length; i++) {
+        leProfil = await getProfilByIdProfil(posts[i].id_profil)
+        nbLike =  await countLikeFromContenu(posts[i].id_post, 2)
+        isLiked = await getIsLikedByUser(posts[i].id_post,2,id_profil)
+        const pseudo_profil = leProfil.pseudo_profil
         const count = await countComForIdProfil(posts[i].id_profil);
+        posts[i].dataValues.pseudo_profil = pseudo_profil
+        posts[i].dataValues.nbLike = nbLike
+        posts[i].dataValues.isLiked = isLiked
         result.push({ post: posts[i], count: count });
     }
     result.sort((a, b) => b.count - a.count);
