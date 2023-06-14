@@ -104,8 +104,6 @@ exports.getMostComPosts = async (id_profil) => {
         result.push({ post: posts[i], count: count });
     }
     result.sort((a, b) => b.count - a.count);
-    console.log("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA")
-    console.log(result.slice(0, 3).map((item) => item.post))
     return result.slice(0, 3).map((item) => item.post);
 };
 
