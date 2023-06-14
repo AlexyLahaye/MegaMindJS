@@ -1,4 +1,6 @@
 const {client} = require("./db");
+const Sequelize = require('sequelize');
+const { Op } = Sequelize;
 const uuid = require('uuid');
 const { generateHashedPassword } = require('../security/crypto');
 const Profil = require('./profil.model');
@@ -16,6 +18,17 @@ exports.getProfilByPseudo = async (pseudo_profil) => {
 exports.getProfilByIdProfil = async (id_profil) => {
     return await Profil.findOne({where : {id_profil}});
 }
+
+exports.getProfilsByPseudoDYN = async (pseudo_profil) => {
+    return await Profil.findAll({
+        where: {
+            pseudo_profil: {
+                [Sequelize.Op.startsWith]: pseudo_profil // Utilise Op.startsWith pour la correspondance partielle
+            }
+        },
+        limit: 10 // Limite le nombre de résultats à 10
+    });
+};
 
 exports.getMostFollowedProfils = async () => {
     const profils = await Profil.findAll();

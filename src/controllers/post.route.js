@@ -94,6 +94,7 @@ router.get('/id/:id_post', async (req,res) =>{
         res.status(412).send(e.message);
     }
 });
+
 router.delete('/:id_post', async (req, res) => {
     await deletePost(req.params.id_post);
     res.status(204).end();

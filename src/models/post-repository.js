@@ -76,7 +76,7 @@ exports.getMostLikedPosts = async (id_profil) => {
         nbLike =  await countLikeFromContenu(posts[i].id_post, 2)
         isLiked = await getIsLikedByUser(posts[i].id_post,2,id_profil)
         const pseudo_profil = leProfil.pseudo_profil
-        const count = await countLikeForIdProfil(posts[i].id_profil);
+        const count = await countLikeFromContenu(posts[i].id_profil, 2);
         posts[i].dataValues.pseudo_profil = pseudo_profil
         posts[i].dataValues.nbLike = nbLike
         posts[i].dataValues.isLiked = isLiked
@@ -97,17 +97,26 @@ exports.getMostComPosts = async (id_profil) => {
         isLiked = await getIsLikedByUser(posts[i].id_post,2,id_profil)
         const pseudo_profil = leProfil.pseudo_profil
         const count = await countComForIdProfil(posts[i].id_profil);
+
         posts[i].dataValues.pseudo_profil = pseudo_profil
         posts[i].dataValues.nbLike = nbLike
         posts[i].dataValues.isLiked = isLiked
         result.push({ post: posts[i], count: count });
     }
     result.sort((a, b) => b.count - a.count);
+    console.log("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA")
+    console.log(result.slice(0, 3).map((item) => item.post))
     return result.slice(0, 3).map((item) => item.post);
 };
 
 exports.getPostById = async (id_post) => {
-    return await Post.findOne({where : {id_post}});
+    const post = await Post.findOne({where : {id_post}});
+    leProfil = await getProfilByIdProfil(post.id_profil)
+    nbLike =  await countLikeFromContenu(post.id_post, 2)
+    isLiked = await getIsLikedByUser(post.id_post,2,leProfil.id_profil)
+    post.dataValues.nbLike = nbLike
+    post.dataValues.isLiked = isLiked
+    return post
 }
 
 exports.createPost = async (body) => {

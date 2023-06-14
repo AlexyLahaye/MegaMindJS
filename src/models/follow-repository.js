@@ -12,8 +12,8 @@ exports.createFollow = async (body) => {
     await Follow.create(body);
 };
 
-exports.countFollowForIdProfil = async (id_profil) => {
-    return count = await Follow.count({ where: { id_profil } });
+exports.countFollowForIdProfil = async (id_profil_suivi) => {
+    return count = await Follow.count({ where: { id_profil_suivi } });
 };
 
 exports.deleteFollow = async (id_profil, id_profil_suivi) => {

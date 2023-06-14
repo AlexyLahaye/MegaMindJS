@@ -1,7 +1,9 @@
 const express = require('express');
 const router = express.Router();
 const { body } = require('express-validator');
-const {createProfil, getAllProfilsFromIdUser, getProfilByPseudo, deleteProfil, getMostFollowedProfils, getProfilByIdProfil} = require("../models/profil-reprository");
+const {createProfil, getAllProfilsFromIdUser, getProfilByPseudo, deleteProfil, getMostFollowedProfils, getProfilByIdProfil,
+    getProfilsByPseudoDYN
+} = require("../models/profil-reprository");
 
 
 router.post('/', body('pseudo_profil').notEmpty(), async (req, res) => {
@@ -34,6 +36,17 @@ router.get('/pseudoProfil/:pseudo_profil', async (req , res) => {
     }
     catch (e){
         res.status(409).send(e.message);
+    }
+});
+
+//ON RECUPERE UN PROFIL DE MANIERE DYNAMIQUE
+router.get('/pseudoProfilDYN/:pseudo_profil', async (req , res) => {
+    try{
+        const searchedProfils = await getProfilsByPseudoDYN(req.params.pseudo_profil);
+        res.status(200).send(searchedProfils);
+    }
+    catch (e){
+        res.status(410).send(e.message);
     }
 });
 
