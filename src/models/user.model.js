@@ -6,7 +6,7 @@ const user = sequelize.define(
     {
         id_user: { primaryKey: true, type: DataTypes.STRING },
         label_user: { type: DataTypes.STRING, allowNull: false },
-        mdp_user: { type: DataTypes.STRING, allowNull: false },
+        mdp_user: { type: DataTypes.STRING, allowNull: true },
     },
         { tableName: 'users' },
 );

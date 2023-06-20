@@ -25,19 +25,22 @@ router.get('/:label_user', async (req, res) => {
 router.post(
     '/',
     body('label_user').notEmpty(),
-    body('mdp_user').notEmpty().isLength({ min: 5 }),
     async (req, res) => {
-        const { label_user, mdp_user } = req.body;
+        const {label_user} = req.body;
+        try{
+            const user = await userRepository.getUserByLabel(label_user);
 
-        const user = await userRepository.getUserByLabel(label_user);
+            if (!user){
+                await userRepository.createUser(req.body);
+                res.status(201).end();
+            }
+            else {
+                res.status(412).send("Utilisateur déja utilisé !")
+            }
+        } catch (e){
+            res.status(411).send(e)
+        }
 
-        if (!user){
-            await userRepository.createUser(req.body);
-            res.status(201).end();
-        }
-        else {
-            res.status(412).send("Utilisateur deja use")
-        }
     },
 );
 

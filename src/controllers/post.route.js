@@ -9,7 +9,6 @@ const {createPost, deletePost, getAllPostFromPseudoProfil, getPostById, getAllPo
 
 router.post('/', body('contenu_post').notEmpty(), body('sensibilite_post').notEmpty(), async (req, res) => {
     try{
-        console.log(req.body)
         await createPost(req.body)
         res.status(200).json({message : "Le post a bien ete créé"});
     }
@@ -71,6 +70,9 @@ router.get('/most/like/:id_profil', async (req,res) =>{
 //GET LES TROIS POST LES PLUS COM
 router.get('/most/com/:id_profil', async (req,res) =>{
     const foundPost = await getMostComPosts(req.params.id_profil);
+    console.log("//////////////////////////////////////////////////////////////////")
+    console.log(req.params.id_profil)
+    console.log("//////////////////////////////////////////////////////////////////")
 
     if (foundPost) {
         res.status(200).send([foundPost]);

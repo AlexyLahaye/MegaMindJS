@@ -17,7 +17,7 @@ router.post('/', async (req, res) => {
 router.get('/', async (req , res) => {
     try{
         const listSensi = await getAllSensi();
-        res.status(200).send({listSensi : listSensi});
+        res.status(200).send(listSensi);
     }
     catch (e){
         console.log(e)

@@ -4,8 +4,10 @@ const { body } = require('express-validator');
 const {createLike, getAllLikeFromIdContenu, getIsLikedByUser, countLikeFromContenu, deleteLike} = require("../models/like-repository");
 
 
-router.post('/', body('id_like').notEmpty(), body('id_contenu_like').notEmpty(), async (req, res) => {
+router.post('/', body('id_contenu_like').notEmpty(), async (req, res) => {
     await createLike(req.body)
+    console.log(req.body)
+
     res.status(200).json({message : "Le Like a fonctionné"});
 });
 

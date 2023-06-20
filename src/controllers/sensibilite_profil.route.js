@@ -4,6 +4,7 @@ const { body } = require('express-validator');
 const {createSensiProfil, getSensiProfilById, updateSensiProfil} = require("../models/sensibilite_profil.repository");
 
 
+
 router.post('/', async (req, res) => {
     const sensibilite_profil = await getSensiProfilById(req.body.id_profil);
     try {
@@ -21,10 +22,15 @@ router.post('/', async (req, res) => {
     }
 });
 
+router.post('/update', async (req, res) => {
+    await updateSensiProfil(req.body.id_profil, req.body)
+    res.status(200).json({message : "La notif a été mise a jour"});
+});
+
 router.get('/:id_profil', async (req , res) => {
     try{
-        const listSensi = await getSensiProfilById(req.params.id_profil) ;
-        res.status(200).send({listSensi : listSensi});
+        const uneSensiProfil = await getSensiProfilById(req.params.id_profil) ;
+        res.status(200).send(uneSensiProfil);
     }
     catch (e){
         console.log(e)

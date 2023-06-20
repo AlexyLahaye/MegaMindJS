@@ -17,8 +17,8 @@ exports.createCom = async (body) => {
     await Commentaire.create(body);
 };
 
-exports.countComForIdProfil = async (id_profil_com) => {
-    return count = await Commentaire.count({ where: { id_profil_com } });
+exports.countComForIdProfil = async (id_post_com) => {
+    return count = await Commentaire.count({ where: { id_post_com } });
 };
 
 exports.deleteCom = async (id_com) => {

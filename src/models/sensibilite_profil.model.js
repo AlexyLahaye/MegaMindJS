@@ -7,8 +7,8 @@ const Sensibilite_profil = sequelize.define(
         id_sensibilite: { primaryKey: true, type: DataTypes.STRING },
         id_profil: { primaryKey: true, type: DataTypes.STRING, allowNull: false  },
         ecriture_sensibilite: { type: DataTypes.STRING, allowNull: true },
-        lecture_sensibilite: {type: DataTypes.STRING, allowNull: true},
-        mots_sensibilite: {type: DataTypes.STRING, allowNull: true}
+        lecture_sensibilite: {type: DataTypes.TEXT, allowNull: true},
+        mots_sensibilite: {type: DataTypes.TEXT, allowNull: true},
     },
     { tableName: 'sensibilite_profil' },
 );

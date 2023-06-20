@@ -2,8 +2,10 @@ const express = require('express');
 const router = express.Router();
 const { body } = require('express-validator');
 const {createProfil, getAllProfilsFromIdUser, getProfilByPseudo, deleteProfil, getMostFollowedProfils, getProfilByIdProfil,
-    getProfilsByPseudoDYN
+    getProfilsByPseudoDYN,
+    updateProfil
 } = require("../models/profil-reprository");
+const {updateNotif} = require("../models/notification-repository");
 
 
 router.post('/', body('pseudo_profil').notEmpty(), async (req, res) => {
@@ -16,6 +18,11 @@ router.post('/', body('pseudo_profil').notEmpty(), async (req, res) => {
     else {
         res.status(401).send("Echec création profil")
     }
+});
+
+router.post('/update', body('pseudo_profil').notEmpty(), async (req, res) => {
+    await updateProfil(req.body.id_profil, req.body)
+    res.status(200).json({message : "La notif a été mise a jour"});
 });
 
 router.get('/:id_user', async (req , res) => {
